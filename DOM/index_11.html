@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id ='form' onsubmit=saveToLocalStorage(event)>
+        <h1>Add User Details</Details></h1>
+        <div>
+            <label>Name</label>
+            <input type = 'text' name = 'name'>    
+        </div>
+        <br>
+        <div>
+            <label>Email</label>
+            <input type = 'email' name = 'email'>    
+        </div>
+        <br>
+        <div>
+            <label>Phonenumber</label>
+            <input type = 'tel' name = 'phonenumber'>    
+        </div> 
+        <br>       
+        <button>Submit</button>
+    </form>
+    <script>
+        function saveToLocalStorage(event){
+            event.preventDefault();
+            const name = event.target.name.value;
+            const email = event.target.email.value;
+            const phonenumber = event.target.phonenumber.value;
+            const obj ={
+                name,
+                email,
+                phonenumber
+            }
+            //1st way --> from shap.
+            localStorage.setItem('user', JSON.stringify(obj));
+            //2nd way --> from shap. YT. (reversed back to object)
+            const obj_serialized = JSON.stringify(obj);
+            localStorage.setItem('user', obj_serialized);
+            // console.log(localStorage);
+            const obj_desrialized = JSON.parse(localStorage.getItem('user'));
+            console.log(obj_desrialized);
+        }
+    </script>
+</body>
+</html>
