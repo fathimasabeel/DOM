@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="saveToLocalStorage(event)">
+        <h1>Add Your Details</Details></h1>
+        <div>
+            <label>Name</label>
+            <input type = 'text' name = 'username' required/>    
+        </div>
+        <br>
+        <div>
+            <label>Email</label>
+            <input type = 'email' name = 'email'required/>    
+        </div>
+        <br>
+        <div>
+            <label>Phonenumber</label>
+            <input type = 'tel' name = 'phonenumber'>    
+        </div>
+        <br>
+        <button>Submit</button>
+    </form>
+    <ul id = 'listOfitems'></ul>
+    <script>
+        // we create an event [on click], user details should be saved in the local storage
+        function saveToLocalStorage(event){
+            event.preventDefault();
+            const name = event.target.username.value;
+            const email = event.target.email.value;
+            const phonenumber = event.target.phonenumber.value;
+            const obj = {
+                name,
+                email,
+                phonenumber
+            }
+            //1st way --> from shap.
+            localStorage.setItem(obj.email, JSON.stringify(obj));
+            // console.log(localStorage);
+            //2nd way --> from shap. YT. (reversed back to object)
+            const obj_serialized = JSON.stringify(obj);
+            localStorage.setItem(obj.email, obj_serialized);
+            // console.log(localStorage);
+            const obj_desrialized = JSON.parse(localStorage.getItem(obj.email));
+            console.log(obj_desrialized);
+
+            showUserOnScreen(obj);
+        }
+        // show the user details on the screen usind DOM manipulation
+        function showUserOnScreen(obj){
+            const parentElement = document.getElementById('listOfitems');
+            const childElement = document.createElement('li');
+            // childElement.textContent = obj.name + '-' + obj.email +'-' + obj.phonenumber;
+            childElement.innerHTML = obj.name + '-' + obj.email +'-' + obj.phonenumber;
+            parentElement.appendChild(childElement);
+        }
+    </script>
+</body>
+</html>
