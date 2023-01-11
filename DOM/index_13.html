@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="saveToLocalStorage(event)">
+        <h1>Add Multiple Users</h1>
+        <div>
+            <label>Name</label>
+            <input type = 'text' name = 'username'/>
+        </div>
+        <br>
+        <div>
+            <label>Email</label>
+            <input type = 'email' name = 'email'/>
+        </div>
+        <br>
+        <div>
+            <label>Phonenumber</label>
+            <input type = 'tel' name = 'phonenumber'/>
+        </div>
+        <br>
+        <button>Sumbit</button>
+    </div>
+    </form>
+    <ul id = listOfitems></ul>
+    <script>
+        function saveToLocalStorage(event){
+            event.preventDefault();
+            const name = event.target.username.value;
+            const email = event.target.email.value;
+            const phonenumber = event.target.phonenumber.value;
+            const obj = {
+                name,
+                email,
+                phonenumber
+            }
+            // 1st way object to string
+            localStorage.setItem(obj.email, JSON.stringify(obj));
+            console.log(localStorage);
+            // 2nd way object - string- object
+            // const obj_serialized = JSON.stringify(obj);
+            // localStorage.setItem(obj.email, obj_serialized);
+            // const obj_deserialized = JSON.parse(localStorage.getItem(obj.email));
+            // console.log(obj_deserialized);
+            showUserOnScreen(obj)
+        }
+        function showUserOnScreen(obj){
+            const parentElement = document.getElementById('listOfitems');
+            // 1st way to show details on screen
+            const childElement = document.createElement('li');
+            childElement.textContent = obj.name + ' ' + obj.email + ' ' + obj.phonenumber;
+
+            // 2nd way to show details on screen
+            // parentElement.innerHTML = `${obj.name} + ${obj.email} + ${obj.phonenumber}`
+            // parentElement.innerHTML = `<li>${obj.name} - ${obj.email} - ${obj.phonenumber}</li>`
+            const deleteButton = document.createElement('input')
+            deleteButton.type = 'button'
+            deleteButton.value = 'Delete'
+            deleteButton.onclick = () => {
+                localStorage.removeItem(obj.email)
+                parentElement.removeChild(childElement)
+            }
+            childElement.appendChild(deleteButton)
+            parentElement.appendChild(childElement);
+        }
+    </script>
+</body>
+</html>
