@@ -35,7 +35,7 @@
                     }else{
                         reject('Error: something wrong')
                     }
-                }, 2000)
+                }, 1000)
             })
 
         }
@@ -68,7 +68,7 @@
         }
 
         createPost({title: 'Post Three', body: 'This is post three'})
-        createPost({title: 'Post Four', body: 'This is post four'})
+        // createPost({title: 'Post Four', body: 'This is post four'})
             .then(() => {
                 getPost() // or .then(() => getPost())
                 deletePost().then((deletedElement1) => {
