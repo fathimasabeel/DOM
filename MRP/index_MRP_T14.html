@@ -69,34 +69,31 @@
 
         createPost({title: 'Post Three', body: 'This is post three'})
         createPost({title: 'Post Four', body: 'This is post four'})
-        //     .then(() => {
-        //         getPost() // or .then(() => getPost())
-        //         deletePost().then((deletedElement1) => {
-        //             console.log(deletedElement1)
-        //             getPost()
-        //             deletePost().then((deletedElement3) => {
-        //                 console.log(deletedElement3)
-        //                 getPost()
-        //                 deletePost().then((deletedElement5) => {
-        //                     console.log(deletedElement5)
-        //                     getPost()
-        //                     deletePost().then((deletedElement5) => {
-        //                         console.log(deletedElement5)
-        //                         getPost()
-        //                     }).catch((msg) => {
-        //                         console.log(msg)})
-        //                 })
+            .then(() => {
+                getPost() // or .then(() => getPost())
+                deletePost().then((deletedElement1) => {
+                    console.log(deletedElement1)
+                    getPost()
+                    deletePost().then((deletedElement3) => {
+                        console.log(deletedElement3)
+                        getPost()
+                        deletePost().then((deletedElement5) => {
+                            console.log(deletedElement5)
+                            getPost()
+                            deletePost().then((deletedElement5) => {
+                                console.log(deletedElement5)
+                                getPost()
+                            }).catch((msg) => {
+                                console.log(msg)})
+                        })
 
-        //             })
-        //         })
-        //     })
-        //     .catch((msg) => console.log(msg))
+                    })
+                })
+            })
+            .catch((msg) => console.log(msg))
 
-            Promise.all([createPost({title: 'Post Five', body: 'This is Post Five'}), updateLastUserActivityTime()])
-            .then((getPost))
-            deletePost().then((getPost))
-            deletePost().then((getPost))
-            deletePost().then((getPost))
+
+            // using Promise.all
             // deletePost().then((getPost))
             // Promise.all([createPost({title: 'Post Five', body: 'This is Post Five'}), updateLastUserActivityTime()])
             // .then((element1) => {
@@ -115,10 +112,6 @@
             //         })
             //     })
             // }).catch((msg) => {console.log(msg)})
-
-
-        
-
 
     </script>
 </body>
