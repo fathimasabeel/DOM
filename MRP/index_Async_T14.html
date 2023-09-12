@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const posts = [
+            // {title: 'Post One', body: 'This is post one'},
+            // {title: 'Post Two', body: 'This is post two'}
+        ];
+        
+        function getPost(){
+            setTimeout(() => {
+                let output = '';
+                // for(i=0;i<posts.length;i++){
+                //     output += `<li>${posts[i].title}</li>`
+                // } // we can use for loop or forEach for oteration
+                posts.forEach((post, index) => {
+                    output += `<li>${post.title}</li>`
+                })
+                document.body.innerHTML = output;
+            }, 1000)
+        }
+        function createPost (post){
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    posts.push({...post, createdAt: new Date().getTime()})
+                    resolve(posts) 
+                }, 1000)
+            })
+        } 
+
+        const user = {
+            username: 'fathima',
+            lastActivityTime: '4th sep'
+        }
+
+        function updateLastUserActivityTime (){
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    user.lastActivityTime = new Date().getTime();
+                    resolve(user.lastActivityTime)
+                }, 1000)
+            })
+        }
+
+        function deletePost (){
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+
+                    if(posts.length > 0){
+                        resolve(posts.pop())
+                    }else{
+                        reject('Error: Array is empty')
+                    }
+                }, 1000)
+            })
+        }
+
+        async function addingPost(){
+            try{
+                const creadtedPost1 = await createPost({ title: 'Post One', body: 'This is post one' });
+                // console.log(creadtedPost1) 
+                // getPost()
+                const creadtedPost2 = await createPost({ title: 'Post Two', body: 'This is post two' });
+                // console.log(creadtedPost2) 
+                // getPost()
+                const creadtedPost3 = await createPost ({ title: 'Post Three', body: 'This is post three' });
+                // console.log(creadtedPost3) 
+                // getPost()
+                const creadtedPost4 = await createPost ({ title: 'Post Four', body: 'This is post four' });
+                console.log(creadtedPost4) 
+                getPost() 
+
+                const deletedPost1 = await deletePost();
+                console.log(deletedPost1) 
+                getPost() 
+                const deletedPost2 = await deletePost();
+                console.log(deletedPost2)
+                getPost()
+                const deletedPost3 = await deletePost();
+                console.log(deletedPost3)
+                getPost()
+                // const deletedPost4 = await deletePost();
+                // console.log(deletedPost4)
+                // getPost()
+                // const deletedPost5 = await deletePost();
+                // console.log(deletedPost5)
+                // getPost()
+
+            } catch(err) {
+                console.log(err)
+            }
+        }
+        addingPost()
+
+
+    </script>
+</body>
+</html>
