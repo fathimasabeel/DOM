@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form-id" onsubmit = "saveToLocalStorage(event)">
+        <h1>Booking Appointment App</h1>
+        <div>
+            <label>Name</label>
+            <input type="text" name="username" id="idname" required/>
+        </div>
+        <br>
+        <div>
+            <label>Email</label>
+            <input type="email" name="email" id="idemail" required/>
+        </div>
+        <br>
+        <div>
+            <label>Phonenumber</label>
+            <input type="tel" name="phonenumber" id="idphonenumber" required/>
+        </div>
+        <br>
+        <button>Submit</button>
+    </form>
+    <ul id="listOfItems"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        function saveToLocalStorage(event){
+            event.preventDefault()
+            const name = event.target.username.value;
+            const email = event.target.email.value;
+            const phonenumber = event.target.phonenumber.value;
+            const obj = {
+                name, 
+                email,
+                phonenumber
+            }
+
+            axios.post("https://crudcrud.com/api/522083080d8d44db852f6a38e4d1b922/appiontmentData", obj)
+              .then(response => {
+                showUserOnScreen(response.data)
+                console.log(response)
+              })
+              .catch(err => {
+                document.body.innerHTML = document.body.innerHTML + "<h3>Something went wrong<h3/>"
+                console.log(err)
+              })
+
+            // localStorage.setItem(obj.email, JSON.stringify(obj))
+            // console.log(localStorage);
+
+            // showUserOnScreen(obj)
+        }
+        
+        function showUserOnScreen(obj){
+            const parentElement = document.getElementById("listOfItems")
+            const childElement = document.createElement("li")
+            childElement.textContent = obj.name + ' ' + obj.email + ' ' + obj.phonenumber;
+            
+            // OR
+            // parentElement.innerHTML = `<li>${obj.name} + ${obj.email} + ' ' + ${obj.phonenumber}</li>`
+
+            const deleteBtn = document.createElement('input')
+            deleteBtn.type = 'Button'
+            deleteBtn.value = 'Delete'
+            deleteBtn.onclick =() => {
+                // localStorage.removeItem(obj.email);
+                parentElement.removeChild(childElement);
+            }
+
+            const editBtn = document.createElement('input')
+            editBtn.type = 'Button'
+            editBtn.value = 'Edit'
+            deleteBtn.onclick = () => {
+                // localStorage.removeItem(obj.email);
+                parentElement.removeChild(childElement)
+                document.getElementById('idname').value = obj.name
+                document.getElementById('idemail').value = obj.email
+                document.getElementById('idphonenumber').value = obj.phonenumber
+
+            }
+
+            childElement.appendChild(deleteBtn)
+            childElement.appendChild(editBtn)
+            parentElement.appendChild(childElement);
+        }
+    </script>
+</body>
+</html>
