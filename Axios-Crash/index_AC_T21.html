@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="from_id" onsubmit="saveToLocalStorage(event)">
+        <h2>Application</h2>
+        <div>
+            <label>Name</label>
+            <input type="text" name="username" id="userid" required/>
+        </div>
+        <br>
+        <div>
+            <label>Email</label>
+            <input type="email" name="useremail" id="emailid" required/>
+        </div>
+        <br>
+        <div>
+            <label>Phonenumber</label>
+            <input type="tel" name="userphone_no" id="phoneid" required/>
+        </div>
+        <br>
+        <button>Submit</button>
+
+    </form>
+    <ul id="listOfItems"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        function saveToLocalStorage(event){
+            event.preventDefault()
+            const name = event.target.username.value;
+            const email = event.target.useremail.value;
+            const phonenumber = event.target.userphone_no.value;
+            const obj = {
+                name,
+                email,
+                phonenumber
+            }
+
+            // to store data in the cloud
+            axios.post("https://crudcrud.com/api/729c62a2717248b5ad96367ec2e51be0/appointmentDetails", obj)
+                .then(response => {
+                    showUserOnScreen(response.data)
+                    console.log(response)
+                })
+                .catch(err => {
+                    document.body.innerHTML = document.body.innerHTML + "Something went wrong";
+                    console.log(err)
+                })
+
+        }
+
+        // to get data from the cloud & display on screen when we refresh the page
+        window.addEventListener("DOMContentLoaded", () => {
+            axios.get("https://crudcrud.com/api/729c62a2717248b5ad96367ec2e51be0/appointmentDetails")
+                .then(response => {
+                    console.log(response)
+
+                    for(i=0; i<response.data.length; i++){
+                        showUserOnScreen(response.data[i])
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+        })
+
+        function showUserOnScreen(obj){
+            const parentElement = document.getElementById('listOfItems')
+            const childElement = document.createElement('li')
+            childElement.textContent = obj.name + ' ' + obj.email + ' ' + obj.phonenumber
+
+            const deleteBtn = document.createElement('input')
+            deleteBtn.type = 'Button'
+            deleteBtn.value = 'Delete'
+            deleteBtn.onclick = () => {
+                axios.delete("https://crudcrud.com/api/729c62a2717248b5ad96367ec2e51be0/appointmentDetails/6509a5d8b987ad03e876af6a")
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(err => {
+                    document.body.innerHTML = document.body.innerHTML + "Something went wrong";
+                    console.log(err)
+                })
+                parentElement.removeChild(childElement)
+            }
+
+            const editBtn = document.createElement('input')
+            editBtn.type = 'Button'
+            editBtn.value = 'Edit'
+            editBtn.onclick = () => {
+                parentElement.removeChild(childElement)
+            }
+            document.getElementById('userid').value = obj.name;
+            document.getElementById('emailid').value = obj.email;
+            document.getElementById('phoneid').value = obj.phonenumber;
+
+            childElement.appendChild(deleteBtn);
+            childElement.appendChild(editBtn);
+            parentElement.appendChild(childElement);
+        }
+    </script>
+</body>
+</html>
