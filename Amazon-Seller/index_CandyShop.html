@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <h2>Candy Shop</h2>
+    <form id="form-id" onsubmit="addNewCandies(event)">
+        <div>
+            <label for="candyname">Candy Name</label>
+            <input type="text" name="candyname" id="candy-id" required/>
+        </div>
+        <br>
+        <div>
+            <label for="description">Description</label>
+            <input type="text" name="description" id="description-id" required/>
+        </div>
+        <br>
+        <div>
+            <label for="candyprice">Price</label>
+            <input type="number" name="candyprice" id="candyprice-id" required/>
+        </div>
+        <br>
+        <div>
+            <label for="candyquantity">Quantity</label>
+            <input type="number" name="candyquantity" id="candyquantity-id" required/>
+        </div>
+        <br>
+        <button>Add Item</button>
+
+    </form>
+    <ul id="listOfItems"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+    <script>
+        var editingPost = null;
+        function addNewCandies(){
+            event.preventDefault()
+            const candy = event.target.candyname.value;
+            const description = event.target.description.value;
+            const candyprice = event.target.candyprice.value;
+            const candyquantity = event.target.candyquantity.value;
+            const obj = {
+                candy,
+                description,
+                candyprice,
+                candyquantity
+            }
+            if(editingPost === null){
+                axios.post(`https://crudcrud.com/api/fef3b900612d44c8ae96f51f9414b733/userData`, obj)
+                .then((response) => {
+                    console.log(response)
+                }).catch((err) => {
+                    document.body.innerHTML = document.body.innerHTML + "Something went wrong"
+                    console.log(err)
+                })
+            }else{
+                axios.put(`https://crudcrud.com/api/fef3b900612d44c8ae96f51f9414b733/userData/${editingPost}`, obj)
+                .then((response) => {
+                    console.log(response)
+                }).catch((err) => {
+                    document.body.innerHTML = document.body.innerHTML + "Something went wrong"
+                    console.log(err)
+                })
+            }
+            
+        }
+        window.addEventListener("DOMContentLoaded", () => {
+            axios.get("https://crudcrud.com/api/fef3b900612d44c8ae96f51f9414b733/userData")
+                .then((response) => {
+                    console.log(response)
+
+                    for(var i=0; i<response.data.length; i++){
+                        showOnScreen(response.data[i])
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                })
+        })
+
+        function showOnScreen(obj){
+            const parentElement = document.getElementById("listOfItems")
+            const childElement = document.createElement('li')
+            childElement.textContent = obj.candy + ' ' + obj.description + ' ' + obj.candyprice + ' ' + obj.candyquantity
+
+            const buy1 = document.createElement('input')
+            buy1.type = 'Button'
+            buy1.value = 'Buy One'
+            buy1.onclick = () => {
+                editingPost = obj._id
+                parentElement.removeChild(childElement)
+
+                document.getElementById('candy-id').value = obj.candy;
+                document.getElementById('description-id').value = obj.description;
+                document.getElementById('candyprice-id').value = obj.candyprice;
+                document.getElementById('candyquantity-id').value = obj.candyquantity;
+            }
+            const buy2 = document.createElement('input')
+            buy2.type = 'Button'
+            buy2.value = 'Buy Two'
+            buy2.onclick = () => {
+                editingPost = obj._id
+                parentElement.removeChild(childElement)
+
+                document.getElementById('candy-id').value = obj.candy;
+                document.getElementById('description-id').value = obj.description;
+                document.getElementById('candyprice-id').value = obj.candyprice;
+                document.getElementById('candyquantity-id').value = obj.candyquantity;
+            }
+            const buy3 = document.createElement('input')
+            buy3.type = 'Button'
+            buy3.value = 'Buy Three'
+            buy3.onclick = () => {
+                editingPost = obj._id
+                parentElement.removeChild(childElement)
+
+                document.getElementById('candy-id').value = obj.candy;
+                document.getElementById('description-id').value = obj.description;
+                document.getElementById('candyprice-id').value = obj.candyprice;
+                document.getElementById('candyquantity-id').value = obj.candyquantity;
+            }
+
+            childElement.appendChild(buy1)
+            childElement.appendChild(buy2)
+            childElement.appendChild(buy3)
+            parentElement.appendChild(childElement)
+
+        }
+    </script>
+</body>
+</html>
